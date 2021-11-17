@@ -8,6 +8,24 @@ class Transaction:
         self.price = price
         self.currency = currency
 
+    def _total_transaction_price(self) -> float:
+        total_price = self.price * self.shares
+        
+        return total_price
+
+    def transaction_record(self) -> dict:
+        total_price = self._total_transaction_price()
+        record = {
+            'action': self.action,
+            'symbol': self.symbol,
+            'price': self.price,
+            'shares': self.shares,
+            'total_price': total_price,
+            'currency': self.currency,
+        }
+
+        return record
+
 
 class Buy(Transaction):
     action = 'buy'
