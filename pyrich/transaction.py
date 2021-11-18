@@ -1,8 +1,13 @@
+import pandas as pd
+
+
 class Transaction:
 
-    def __init__(self, action: str, symbol: str, shares: int,
-                 price: float, currency: str = 'USD') -> None:
+    def __init__(self, action: str, date: str, time: str, symbol: str,
+                 shares: int, price: float, currency: str = 'USD') -> None:
         self.action = action
+        self.date = date
+        self.time = time
         self.symbol = symbol.upper()
         self.shares = shares
         self.price = price
@@ -13,10 +18,19 @@ class Transaction:
         
         return total_price
 
+    def _timestamp(self) -> pd.Timestamp:
+        timestamp_str = f'{self.date} {self.time}'
+        timestamp = pd.to_datetime(timestamp_str)
+
+        return timestamp
+
     def transaction_record(self) -> dict:
         total_price = self._total_transaction_price()
+        timestamp = self._timestamp()
+
         record = {
             'action': self.action,
+            'date': timestamp,
             'symbol': self.symbol,
             'price': self.price,
             'shares': self.shares,
