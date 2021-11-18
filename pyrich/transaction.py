@@ -1,16 +1,16 @@
-import pandas as pd
+from typing import Optional
+from pyrich.date import to_timestamp
 
 
 class Transaction:
 
-    def __init__(self, action: str, date: str, time: str, symbol: str,
-                 shares: int, price: float, currency: str = 'USD') -> None:
+    def __init__(self, action: str, symbol: str, shares: int, price: float,
+                 currency: str = 'USD', datetime: Optional[str] = None) -> None:
         self.action = action
-        self.date = date
-        self.time = time
         self.symbol = symbol.upper()
         self.shares = shares
         self.price = price
+        self.datetime = datetime
         self.currency = currency
 
     def _total_transaction_price(self) -> float:
@@ -18,15 +18,9 @@ class Transaction:
         
         return total_price
 
-    def _timestamp(self) -> pd.Timestamp:
-        timestamp_str = f'{self.date} {self.time}'
-        timestamp = pd.to_datetime(timestamp_str)
-
-        return timestamp
-
     def transaction_record(self) -> dict:
         total_price = self._total_transaction_price()
-        timestamp = self._timestamp()
+        timestamp = to_timestamp(self.datetime)
 
         record = {
             'action': self.action,
