@@ -1,3 +1,4 @@
+import pandas as pd
 import streamlit as st
 from pyrich.connect import Database
 
@@ -13,4 +14,5 @@ symbol = form.text_input('Symbol')
 symbol = symbol.upper()
 search = form.form_submit_button('Search')
 if search:
-    st.write(symbol)
+    result = db.run('SELECT * FROM orders')
+    st.dataframe(result)
