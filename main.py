@@ -1,19 +1,30 @@
-import streamlit as st
-from pyrich.connect import Database
+import sys
+import numpy as np
+from pyqtgraph import PlotWidget, plot
+import pyqtgraph as pg
+from PyQt5.QtWidgets import (
+    QApplication,
+    QVBoxLayout,
+    QLabel,
+    QWidget,
+)
+
+class Window(QWidget):
+    def __init__(self):
+        super().__init__()
+        self.initUI()
+        self.setWindowTitle("Stock Chart")
+        self.setLayout(self.layout)
+
+    def initUI(self):
+        # Create a QVBoxLayout instance
+        layout = QVBoxLayout()
+        self.layout = layout
 
 
-CONFIG = st.secrets['postgres']
-st.title('Portfolio')
 
-db = Database(CONFIG)
-
-st.header('Summary')
-st.write('show summary here')
-# result = db.run('SELECT * FROM orders')
-# st.dataframe(result)
-
-st.header('Details')
-st.write('show details here')
-
-st.header('Visualization')
-st.write('show visualization here')
+if __name__ == "__main__":
+    app = QApplication(sys.argv)
+    window = Window()
+    window.show()
+    sys.exit(app.exec_())
