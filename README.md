@@ -1,3 +1,3 @@
-# pyrich
+# pyqt-stock-chart
 
-**pyrich** is a portfolio management package made for retail investors.
+Stock chart watchlist
