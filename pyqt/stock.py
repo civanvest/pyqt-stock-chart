@@ -2,6 +2,10 @@ from abc import ABC, abstractmethod
 from dotenv import load_dotenv
 import finnhub
 import os
+import pandas as pd
+import pyqtgraph as pg
+
+
 class Stock(ABC):
 
     def __init__(self, symbol):
@@ -19,4 +23,18 @@ class Stock(ABC):
 
     def get_price_now(self):
         return self.finnhub_client.quote(self.symbol)
+
+    def draw_chart(self):
+        pg.setConfigOption('background', 'w')
+        price = self.get_price()
+        close = price['c']
+        date = price['t']
+        plt = pg.PlotWidget()
+        plt.resize(500, 300)
+        plt.plot(date, close, pen=pg.mkPen('b', width=5))
+        plt.setAxisItems({'bottom': pg.DateAxisItem()})
+        plt.showGrid(x=True, y=True)
+        plt.setMouseEnabled(x=False, y=False)
+
+        return plt
 
