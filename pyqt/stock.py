@@ -4,6 +4,8 @@ import finnhub
 import os
 import pandas as pd
 import pyqtgraph as pg
+from pyqt.date import get_timestamp
+from pyqt.date import get_n_days_ago
 
 
 class Stock(ABC):
@@ -11,6 +13,11 @@ class Stock(ABC):
     def __init__(self, symbol):
         self.symbol = symbol
         self.finnhub_client = finnhub.Client(api_key=self.get_api_key())
+        self.daily = 'D'
+        one_year_ago = get_n_days_ago(365)
+        today = pd.Timestamp.today().normalize()
+        self.start = get_timestamp(one_year_ago)
+        self.end = get_timestamp(today)
 
     def get_api_key(self):
         load_dotenv()
