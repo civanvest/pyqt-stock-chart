@@ -45,3 +45,19 @@ class Stock(ABC):
 
         return plt
 
+
+class UsStock(Stock):
+
+    def __init__(self, symbol):
+        super().__init__(symbol)
+
+    def get_price(self):
+        res = self.finnhub_client.stock_candles(
+                self.symbol,
+                self.daily,
+                self.start,
+                self.end
+            )
+        return res
+
+
