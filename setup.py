@@ -1,6 +1,6 @@
 from setuptools import setup, find_packages
 
 setup(
-    name='pyrich',
+    name='pyqt',
     packages=find_packages(),
 )
