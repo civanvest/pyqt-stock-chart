@@ -1,11 +1,11 @@
 from abc import ABC, abstractmethod
-from dotenv import load_dotenv
 import finnhub
-import os
 import pandas as pd
 import pyqtgraph as pg
+import yaml
 from pyqt.date import get_timestamp
 from pyqt.date import get_n_days_ago
+from pyqt.util import resource_path
 
 
 class Stock(ABC):
@@ -20,8 +20,10 @@ class Stock(ABC):
         self.end = get_timestamp(today)
 
     def get_api_key(self):
-        load_dotenv()
-        api_key = os.environ.get('FINNHUB_APIKEY')
+        path = resource_path('api.yaml')
+        with open(path) as f:
+            yml = yaml.load(f, Loader=yaml.FullLoader)
+            api_key = yml['FINNHUB_APIKEY']
         return api_key
 
     @abstractmethod
