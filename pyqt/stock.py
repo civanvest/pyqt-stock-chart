@@ -1,4 +1,5 @@
 from abc import ABC, abstractmethod
+import FinanceDataReader as fdr
 import finnhub
 import pandas as pd
 import pyqtgraph as pg
@@ -82,3 +83,16 @@ class KorStock(Stock):
     def __init__(self, symbol):
         self.symbol = symbol
 
+    def get_price(self):
+        one_year_ago = get_n_days_ago(365)
+        date = one_year_ago.strftime('%Y-%m-%d')
+        price = fdr.DataReader(self.symbol, date)
+        price = price.reset_index(level=0)
+        price = self.change_col_name(price)
+        price['t'] = [get_timestamp(x) for x in price['t']]
+        return price
+
+    def change_col_name(self, price):
+        new_col_name = ['t', 'o', 'h', 'l', 'c', 'v', 'pct']
+        price.columns = new_col_name
+        return price
