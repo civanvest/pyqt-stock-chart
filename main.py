@@ -50,6 +50,7 @@ class Window(QWidget):
     def watchlist(self):
         watchlist_tab = QWidget()
         layout = QVBoxLayout()
+        layout.addLayout(self.add_form())
 
         self.table = QTableView(self)
         self.table.setSelectionMode(QAbstractItemView.SingleSelection)
@@ -71,6 +72,27 @@ class Window(QWidget):
 
         watchlist_tab.setLayout(layout)
         return watchlist_tab
+
+    def add_form(self):
+        form_layout = QVBoxLayout()
+
+        symbol_label, self.stock = self.draw_label('Symbol')
+        form_layout.addWidget(symbol_label)
+        form_layout.addWidget(self.stock)
+
+        company_label, self.company = self.draw_label('Name')
+        form_layout.addWidget(company_label)
+        form_layout.addWidget(self.company)
+
+        self.check_box = QCheckBox('Crypto', self)
+        form_layout.addWidget(self.check_box)
+
+        add_button = QPushButton('Add', self)
+        add_button.setFixedWidth(100)
+        add_button.setShortcut('Return')
+        add_button.clicked.connect(self.add_item)
+        form_layout.addWidget(add_button)
+        return form_layout
 
 if __name__ == '__main__':
     app = QApplication(sys.argv)
