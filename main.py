@@ -1,25 +1,18 @@
+from PyQt5.QtCore import Qt
+from PyQt5.QtGui import *
+from PyQt5.QtWidgets import *
 import sys
-import numpy as np
-from pyqtgraph import PlotWidget, plot
-import pyqtgraph as pg
-from PyQt5.QtWidgets import (
-    QApplication,
-    QVBoxLayout,
-    QLabel,
-    QWidget,
-)
 
 class Window(QWidget):
+
     def __init__(self):
         super().__init__()
-        self.initUI()
-        self.setWindowTitle("Stock Chart")
-        self.setLayout(self.layout)
+        self.init_ui()
+    def init_ui(self):
+        self.setWindowTitle('Stock Chart') 
+        self.resize(800, 1000)
 
-    def initUI(self):
-        # Create a QVBoxLayout instance
         layout = QVBoxLayout()
-        self.layout = layout
 
 
 
