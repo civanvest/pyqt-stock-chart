@@ -29,6 +29,23 @@ class Window(QWidget):
         self.tabs.addTab(self.watchlist(), 'Watchlist')
         layout.addWidget(self.tabs)
 
+    def stock_tab(self):
+        outer_most = QWidget()
+
+        self.layout = QVBoxLayout()
+
+        stock_chart_tab = QWidget()
+        stock_chart_tab.setLayout(self.layout)
+
+        self.scroll = QScrollArea()
+        self.scroll.setWidgetResizable(True)
+        self.scroll.setWidget(stock_chart_tab)
+        
+        content = QHBoxLayout()
+        content.addWidget(self.scroll)
+        outer_most.setLayout(content)
+        return outer_most
+
         layout = QVBoxLayout()
 
 
