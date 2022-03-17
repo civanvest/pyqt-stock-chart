@@ -11,6 +11,14 @@ class Window(QWidget):
     def init_ui(self):
         self.setWindowTitle('Stock Chart') 
         self.resize(800, 1000)
+        
+        layout = QHBoxLayout()
+        self.setLayout(layout)
+
+        self.tabs = QTabWidget()
+        self.tabs.addTab(self.stock_tab(), 'Stock Chart')
+        self.tabs.addTab(self.watchlist(), 'Watchlist')
+        layout.addWidget(self.tabs)
 
         layout = QVBoxLayout()
 
