@@ -1,8 +1,10 @@
 from abc import ABC, abstractmethod
+from bs4 import BeautifulSoup as bs
 import FinanceDataReader as fdr
 import finnhub
 import pandas as pd
 import pyqtgraph as pg
+import requests
 import yaml
 from pyqt.date import get_timestamp
 from pyqt.date import get_n_days_ago
@@ -91,6 +93,27 @@ class KorStock(Stock):
         price = self.change_col_name(price)
         price['t'] = [get_timestamp(x) for x in price['t']]
         return price
+
+    def scrape_from_naver_finance(self):
+        url = f'https://finance.naver.com/item/main.nhn?code={self.symbol}'
+        res = requests.get(url)
+        res.raise_for_status()
+        html = res.text
+        soup = bs(html, 'html.parser')
+        today = soup.select_one('#chart_area > div.rate_info > div')
+        tags = today.find_all('span', class_='blind')
+        return tags
+
+    def get_price_now(self):
+        tags = self.scrape_from_naver_finance()
+        info = []
+        for tag in tags:
+            item = tag.get_text()
+            item = item.replace(',', '')
+            info.append(item)
+        label = ['c', 'd', 'dp']
+        price_now = {k: v for k, v in zip(label, info)}
+        return price_now
 
     def change_col_name(self, price):
         new_col_name = ['t', 'o', 'h', 'l', 'c', 'v', 'pct']
