@@ -39,7 +39,6 @@ class Stock(ABC):
         close = price['c']
         date = price['t']
         plt = pg.PlotWidget()
-        plt.resize(500, 300)
         plt.plot(date, close, pen=pg.mkPen('b', width=5))
         plt.setAxisItems({'bottom': pg.DateAxisItem()})
         plt.showGrid(x=True, y=True)
