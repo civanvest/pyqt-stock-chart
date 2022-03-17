@@ -3,6 +3,7 @@ from PyQt5.QtCore import Qt
 from PyQt5.QtGui import *
 from PyQt5.QtWidgets import *
 import sys
+from pyqt.util import resource_path
 
 
 class Window(QWidget):
@@ -46,9 +47,30 @@ class Window(QWidget):
         outer_most.setLayout(content)
         return outer_most
 
+    def watchlist(self):
+        watchlist_tab = QWidget()
         layout = QVBoxLayout()
 
+        self.table = QTableView(self)
+        self.table.setSelectionMode(QAbstractItemView.SingleSelection)
+        self.table.setSelectionBehavior(QAbstractItemView.SelectRows)
+        self.table.setEditTriggers(QAbstractItemView.NoEditTriggers)
+        self.col_len = len(self.data.columns)
+        self.content = QStandardItemModel(0, self.col_len, self)
+        self.content.setHorizontalHeaderLabels(self.data.columns)
+        self.table.setModel(self.content)
 
+        layout.addWidget(self.table)
+        self.read_watchlist()
+
+        remove_button = QPushButton('Remove Selected Stock', self)
+        remove_button.setFixedWidth(200)
+        remove_button.setShortcut('Backspace')
+        remove_button.clicked.connect(self.remove_item)
+        layout.addWidget(remove_button)
+
+        watchlist_tab.setLayout(layout)
+        return watchlist_tab
 
 if __name__ == '__main__':
     app = QApplication(sys.argv)
