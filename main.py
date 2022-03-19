@@ -3,6 +3,9 @@ from PyQt5.QtCore import Qt
 from PyQt5.QtGui import *
 from PyQt5.QtWidgets import *
 import sys
+from pyqt.stock import UsStock
+from pyqt.stock import Crypto
+from pyqt.stock import KorStock
 from pyqt.util import resource_path
 
 
@@ -99,6 +102,58 @@ class Window(QWidget):
         add_button.clicked.connect(self.add_item)
         form_layout.addWidget(add_button)
         return form_layout
+
+    def group(self, symbol, stock_name, is_crypto: bool=False, is_kor: bool=False):
+        group_box = QGroupBox()
+        group_box.setFixedHeight(300)
+
+        layout = QVBoxLayout()
+        name_layout = QHBoxLayout()
+        name = QLabel(stock_name)
+        name.setFont(QFont('Arial', 18, weight=QFont.Bold))
+        ticker = QLabel(f'({symbol})')
+        name_layout.addWidget(name)
+        name_layout.addWidget(ticker)
+        name_layout.addStretch()
+        layout.addLayout(name_layout)
+        
+        if not is_kor:
+            stock = UsStock(symbol)
+        elif is_crypto:
+            stock = Crypto(symbol)
+        else:
+            stock = KorStock(symbol)
+        price = stock.get_price_now()
+        price_layout = QHBoxLayout()
+        price_now = round(float(price['c']), 2)
+        price_label = QLabel(str(price_now))
+        price_label.setFont(QFont('Arial', 14,  weight=QFont.Bold))
+
+        change = int(price['d'])
+        if change > 0:
+            color = 'green'
+            sign = '+'
+        elif change < 0:
+            color = 'red'
+            sign = '-'
+        else:
+            color = 'white'
+            sign = ''
+        pct_change = round(float(price['dp']), 2)
+        price_group = f'{sign}{change} ({pct_change}%)'
+        price_info_label = QLabel(price_group)
+        price_info_label.setStyleSheet(f'Color : {color}')
+        plot = stock.draw_chart()
+        price_layout.addWidget(price_label)
+        price_layout.addWidget(price_info_label)
+        price_layout.addStretch()
+        layout.addLayout(price_layout)
+
+        layout.addWidget(plot)
+        layout.addStretch()
+
+        group_box.setLayout(layout)
+        return group_box
 
 if __name__ == '__main__':
     app = QApplication(sys.argv)
