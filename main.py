@@ -73,6 +73,12 @@ class Window(QWidget):
         watchlist_tab.setLayout(layout)
         return watchlist_tab
 
+    def draw_label(self, label_name):
+        label = QLabel(label_name, self)
+        input_box = QLineEdit(self)
+        input_box.setFixedWidth(150)
+        return label, input_box
+
     def add_form(self):
         form_layout = QVBoxLayout()
 
