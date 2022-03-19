@@ -155,6 +155,19 @@ class Window(QWidget):
         group_box.setLayout(layout)
         return group_box
 
+    def draw_stock_info(self, stock):
+        # stock = [country, symbol, name, crypto]
+        if stock[3] == '1':  # check if stock is crypto
+            crpyto_symbol = f'BINANCE:{stock[1]}USDT'
+            stock_info = self.group(crpyto_symbol, stock[2], is_crypto=True)
+            self.layout.addWidget(stock_info)
+        else:
+            stock_info = self.group(stock[1], stock[2])
+            if stock[0] == 'KOR':  # check if stock is in korea exchange
+                self.layout.addWidget(stock_info, is_kor=True)
+            else:
+                self.layout.addWidget(stock_info)
+
 if __name__ == '__main__':
     app = QApplication(sys.argv)
     window = Window()
