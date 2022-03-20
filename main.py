@@ -168,6 +168,11 @@ class Window(QWidget):
             else:
                 self.layout.addWidget(stock_info)
 
+    def add_row(self, value):
+        row_item = [QStandardItem(item) for item in value]
+        self.content.appendRow(row_item)
+        self.draw_stock_info(value)
+
 if __name__ == '__main__':
     app = QApplication(sys.argv)
     window = Window()
