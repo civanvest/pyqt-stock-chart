@@ -173,6 +173,12 @@ class Window(QWidget):
         self.content.appendRow(row_item)
         self.draw_stock_info(value)
 
+    def read_watchlist(self):
+        watchlist_cnt = self.data.values.size
+        if watchlist_cnt > 0:
+            for value in self.data.values:
+                self.add_row(value)
+
 if __name__ == '__main__':
     app = QApplication(sys.argv)
     window = Window()
