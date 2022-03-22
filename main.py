@@ -179,6 +179,33 @@ class Window(QWidget):
             for value in self.data.values:
                 self.add_row(value)
 
+    def add_item(self):
+        try:
+            stock = self.stock.text()
+            is_int_convertible = isinstance(int(stock), int)
+            company = self.company.text()
+            country = 'KOR'
+        except:
+            stock = self.stock.text().upper()
+            company = self.company.text().title()
+            country = 'USA'
+        
+        self.check_state = self.check_box.checkState()
+        if self.check_state == 2:
+            crypto = '1'
+        else:
+            crypto = ''
+        data = [country, stock, company, crypto]
+
+        if data[1] == '' or data[2] == '':
+            self.alert('information', msg='Provide symbol and name.')
+            return
+
+        self.add_row(data)
+        self.stock.clear()
+        self.company.clear()
+        self.stock.setFocus()
+        self.check_box.setChecked(False)
 if __name__ == '__main__':
     app = QApplication(sys.argv)
     window = Window()
