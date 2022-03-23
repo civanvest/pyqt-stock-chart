@@ -129,7 +129,7 @@ class Window(QWidget):
         price_label = QLabel(str(price_now))
         price_label.setFont(QFont('Arial', 14,  weight=QFont.Bold))
 
-        change = int(price['d'])
+        change = float(price['d'])
         if change > 0:
             color = 'green'
             sign = '+'
