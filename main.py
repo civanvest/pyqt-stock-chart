@@ -1,3 +1,6 @@
+# TODO:
+# threading? https://www.geeksforgeeks.org/writing-files-background-python/
+# Symbol 없는 경우 error handling
 import pandas as pd
 from PyQt5.QtCore import Qt
 from PyQt5.QtGui import *
@@ -37,6 +40,7 @@ class Window(QWidget):
         outer_most = QWidget()
 
         self.layout = QVBoxLayout()
+        self.layout.setAlignment(Qt.AlignTop)
 
         stock_chart_tab = QWidget()
         stock_chart_tab.setLayout(self.layout)
@@ -59,6 +63,8 @@ class Window(QWidget):
         self.table.setSelectionMode(QAbstractItemView.SingleSelection)
         self.table.setSelectionBehavior(QAbstractItemView.SelectRows)
         self.table.setEditTriggers(QAbstractItemView.NoEditTriggers)
+        self.match_selection = []
+        self.table.clicked.connect(self.clear_selection)
         self.col_len = len(self.data.columns)
         self.content = QStandardItemModel(0, self.col_len, self)
         self.content.setHorizontalHeaderLabels(self.data.columns)
@@ -75,6 +81,16 @@ class Window(QWidget):
 
         watchlist_tab.setLayout(layout)
         return watchlist_tab
+
+    def clear_selection(self, item):
+            self.match_selection.append(item.row())
+
+            if len(self.match_selection) == 2:
+                if self.match_selection[0] == self.match_selection[1]:
+                    self.table.clearSelection()
+                    self.match_selection = []
+                else:
+                    self.match_selection.pop(0)        
 
     def draw_label(self, label_name):
         label = QLabel(label_name, self)
@@ -130,15 +146,14 @@ class Window(QWidget):
         price_label.setFont(QFont('Arial', 14,  weight=QFont.Bold))
 
         change = float(price['d'])
+        sign = ''
         if change > 0:
             color = 'green'
             sign = '+'
         elif change < 0:
             color = 'red'
-            sign = '-'
         else:
             color = 'white'
-            sign = ''
         pct_change = round(float(price['dp']), 2)
         price_group = f'{sign}{change} ({pct_change}%)'
         price_info_label = QLabel(price_group)
