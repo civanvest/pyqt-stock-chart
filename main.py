@@ -177,10 +177,11 @@ class Window(QWidget):
             stock_info = self.group(crpyto_symbol, stock[2], is_crypto=True)
             self.layout.addWidget(stock_info)
         else:
-            stock_info = self.group(stock[1], stock[2])
             if stock[0] == 'KOR':  # check if stock is in korea exchange
-                self.layout.addWidget(stock_info, is_kor=True)
+                stock_info = self.group(stock[1], stock[2], is_kor=True)
+                self.layout.addWidget(stock_info)
             else:
+                stock_info = self.group(stock[1], stock[2])
                 self.layout.addWidget(stock_info)
 
     def add_row(self, value):
