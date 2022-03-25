@@ -218,10 +218,17 @@ class Window(QWidget):
             return
 
         self.add_row(data)
+        self.add_to_watchlist_csv(data)
+
         self.stock.clear()
         self.company.clear()
         self.stock.setFocus()
         self.check_box.setChecked(False)
+    def add_to_watchlist_csv(self, data):
+        new_line = {k: v for k, v in zip(self.data.columns, data)}
+        new_line = pd.DataFrame(new_line ,index=[0])
+        self.data = pd.concat([self.data, new_line])
+
 if __name__ == '__main__':
     app = QApplication(sys.argv)
     window = Window()
