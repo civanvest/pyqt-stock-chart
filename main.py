@@ -229,6 +229,22 @@ class Window(QWidget):
         new_line = pd.DataFrame(new_line ,index=[0])
         self.data = pd.concat([self.data, new_line])
 
+    def remove_item(self):
+        selected = self.table.selectedIndexes()
+        selected_row_idx = selected[0].row()
+        if not selected:
+            self.alert('information', msg='No item selected.')
+            return
+
+        symbol_name = self.data[['Symbol', 'Name']]
+        selected_stock = symbol_name.iloc[selected_row_idx].values
+        msg = f"Remove {selected_stock[0]} ({selected_stock[1]}) from watchlist?"
+        option = self.alert('question', msg)
+        if option == QMessageBox.Yes:
+            self.data.drop(selected_row_idx, inplace=True)
+            self.content.removeRows(selected_row_idx, 1)
+            self.layout.takeAt(selected_row_idx).widget().deleteLater()
+
 if __name__ == '__main__':
     app = QApplication(sys.argv)
     window = Window()
