@@ -224,6 +224,8 @@ class Window(QWidget):
         self.company.clear()
         self.stock.setFocus()
         self.check_box.setChecked(False)
+        self.update_watchlist()
+
     def add_to_watchlist_csv(self, data):
         new_line = {k: v for k, v in zip(self.data.columns, data)}
         new_line = pd.DataFrame(new_line ,index=[0])
@@ -244,6 +246,11 @@ class Window(QWidget):
             self.data.drop(selected_row_idx, inplace=True)
             self.content.removeRows(selected_row_idx, 1)
             self.layout.takeAt(selected_row_idx).widget().deleteLater()
+            self.update_watchlist()
+
+    def update_watchlist(self):
+        self.data.reset_index(drop=True, inplace=True)
+
 
 if __name__ == '__main__':
     app = QApplication(sys.argv)
