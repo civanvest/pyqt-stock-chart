@@ -254,6 +254,25 @@ class Window(QWidget):
 
 if __name__ == '__main__':
     app = QApplication(sys.argv)
+    app.setQuitOnLastWindowClosed(False)
     window = Window()
+
+    icon_path = resource_path('candlestick.ico')
+    icon = QIcon(icon_path)
+    tray = QSystemTrayIcon()
+    tray.setIcon(icon)
+    tray.setVisible(True)
+
+    menu = QMenu()
+    open_window = QAction('Open window')
+    open_window.triggered.connect(window.show)
+    menu.addAction(open_window)
+
+    quit_app = QAction('Quit')
+    quit_app.triggered.connect(app.quit)
+    menu.addAction(quit_app)
+    
+    tray.setContextMenu(menu)
+
     window.show()
     sys.exit(app.exec_())
