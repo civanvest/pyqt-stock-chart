@@ -251,6 +251,9 @@ class Window(QWidget):
     def update_watchlist(self):
         self.data.reset_index(drop=True, inplace=True)
 
+    def closeEvent(self, QCloseEvent):
+        self.data.to_csv(self.data_path, index=False, encoding='utf-8-sig')
+
 
 if __name__ == '__main__':
     app = QApplication(sys.argv)
