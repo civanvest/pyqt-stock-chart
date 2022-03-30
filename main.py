@@ -251,6 +251,13 @@ class Window(QWidget):
     def update_watchlist(self):
         self.data.reset_index(drop=True, inplace=True)
 
+    def keyPressEvent(self, e):
+        if e.modifiers() & Qt.ControlModifier:
+            if e.key() == Qt.Key_Q:
+                self.close()
+            elif e.key() == Qt.Key_W:
+                self.hide()
+
     def closeEvent(self, QCloseEvent):
         self.data.to_csv(self.data_path, index=False, encoding='utf-8-sig')
 
