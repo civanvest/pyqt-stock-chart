@@ -258,6 +258,10 @@ class Window(QWidget):
             elif e.key() == Qt.Key_W:
                 self.hide()
 
+    def hideEvent(self, QHideEvent):
+        first_tab = self.tabs.widget(0)
+        self.tabs.setCurrentWidget(first_tab)
+
     def closeEvent(self, QCloseEvent):
         self.data.to_csv(self.data_path, index=False, encoding='utf-8-sig')
 
