@@ -251,6 +251,23 @@ class Window(QWidget):
     def update_watchlist(self):
         self.data.reset_index(drop=True, inplace=True)
 
+    def alert(self, type, msg: str=None):
+        if type == 'information':
+            option = QMessageBox.information(
+                self,
+                'QMessageBox',
+                msg,
+            )
+        elif type == 'question':
+            option = QMessageBox.question(
+                self,
+                'QMessageBox',
+                msg,
+                QMessageBox.Yes | QMessageBox.No,
+                QMessageBox.Yes,
+            )
+        return option
+
     def keyPressEvent(self, e):
         if e.modifiers() & Qt.ControlModifier:
             if e.key() == Qt.Key_Q:
